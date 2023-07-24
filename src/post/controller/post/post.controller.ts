@@ -5,6 +5,7 @@ import { PageOptionsDto } from 'src/dto/page-option.dto';
 import { CreatePostDto } from 'src/dto/post.dto';
 import { Role } from 'src/enum/role.enum';
 import JwtAuthenticationGuard from 'src/guard/jwt-authentication/jwt-authentication.guard';
+import { RoleGuard } from 'src/guard/role-guard/role-guard.guard';
 import { PostService } from 'src/post/service/post/post.service';
 
 @Controller('post')
@@ -22,7 +23,7 @@ export class PostController {
             .replace(/[^\w-]+/g, "");
     }
 
-    @UseGuards(JwtAuthenticationGuard) 
+    @UseGuards(JwtAuthenticationGuard)
     @HttpCode(201)
     @PublicRoutes()
     @Post('create')
@@ -35,13 +36,15 @@ export class PostController {
 
     }
 
-    @UseGuards(JwtAuthenticationGuard)
+    @Roles(Role.User)
+    @UseGuards(JwtAuthenticationGuard, RoleGuard)
     @HttpCode(200)
     @Get('all')
     async getPosts() {
         const posts = await this.postService.getPosts()
         return posts
     }
+
     @UseGuards(JwtAuthenticationGuard)
     @HttpCode(HttpStatus.OK)
     @Get('')

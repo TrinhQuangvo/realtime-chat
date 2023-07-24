@@ -1,10 +1,12 @@
+import Role from "src/enum/role.enum"
+
 export class CreateUserDto {
     email: string
     avatar: string
     password: string
     fistName: string
     lastName: string
-    role: string
+    role: Role
     isActive: boolean
 }
 
@@ -15,6 +17,6 @@ export class UpdateUserDto {
     password: string
     fistName: string
     lastName: string
-    role: string
+    role: Role
     isActive: boolean
 }
