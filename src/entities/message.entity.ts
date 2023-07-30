@@ -1,17 +1,18 @@
-
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './auth.entity';
+import { IsNotEmpty } from 'class-validator';
 
 
 @Entity()
 export class Message {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    public id!: string;
 
     @Column()
-    content: string;
+    @IsNotEmpty()
+    public content: string;
 
+    @IsNotEmpty()
     @ManyToOne(() => User)
-    author: User;
+    public author: User;
 }
- 

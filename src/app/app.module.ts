@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { AuthModule } from 'src/Modules/auth/auth.module';
+import { PostModule } from 'src/Modules/post/post.module';
+import { TagModule } from 'src/Modules/tag/tag.module';
+import { UserModule } from 'src/Modules/user/user.module';
+import { WebsocketsModule } from 'src/Modules/websockets/websockets.module';
 import { User } from 'src/entities/auth.entity';
-import { UserModule } from 'src/user/user.module';
-import { AuthModule } from 'src/auth/auth.module';
+import { Message } from 'src/entities/message.entity';
 import { Post } from 'src/entities/post.entity';
-import { PostModule } from 'src/post/post.module';
 import { Tag } from 'src/entities/tag.entity';
-import { TagModule } from 'src/tag/tag.module';
-import { AppService } from './app.service';
-import { AppController } from './app.controller';
 
 const config: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -17,13 +17,11 @@ const config: TypeOrmModuleOptions = {
   password: '',
   port: 3306,
   database: 'nestjs_tutorial',
-  entities: [User, Post, Tag],
+  entities: [User, Post, Tag, Message],
   synchronize: true
 }
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), UserModule, AuthModule, PostModule, TagModule],
-  providers: [AppService],
-  controllers: [AppController]
+  imports: [TypeOrmModule.forRoot(config), UserModule, AuthModule, PostModule, TagModule, WebsocketsModule],
 })
 export class AppModule { }
