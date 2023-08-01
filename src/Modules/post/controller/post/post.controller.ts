@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { Roles } from 'src/decorator/role.decorator';
 import { PageOptionsDto } from 'src/dto/page-option.dto';
 import { CreatePostDto } from 'src/dto/post.dto';
@@ -22,7 +22,7 @@ export class PostController {
             .replace(/[^\w-]+/g, "");
     }
 
-    @Roles(Role.User, Role.Admin)
+    @Roles(Role.User)
     @UseGuards(JwtAuthenticationGuard, RoleGuard)
     @HttpCode(201)
     @Post('create')
@@ -33,12 +33,13 @@ export class PostController {
 
     }
 
-    @Roles(Role.User, Role.Admin)
+    @Roles(Role.User)
     @UseGuards(JwtAuthenticationGuard, RoleGuard)
     @HttpCode(200)
     @Get('')
-    async getAllPost(payload: PageOptionsDto) {
+    async getAllPost(@Param() payload: PageOptionsDto) {
         const posts = await this._postService.getAllPosts(payload)
+
         return posts
     }
 

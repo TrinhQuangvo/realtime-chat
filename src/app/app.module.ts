@@ -22,6 +22,13 @@ const config: TypeOrmModuleOptions = {
 }
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), UserModule, AuthModule, PostModule, TagModule, WebsocketsModule],
+  imports: [
+    TypeOrmModule.forRoot(config),
+    UserModule,
+    AuthModule,
+    PostModule,
+    TagModule,
+    WebsocketsModule,
+  ]
 })
 export class AppModule { }

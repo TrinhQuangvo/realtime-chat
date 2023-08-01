@@ -3,7 +3,6 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { AbstractEntity } from './abstract.entity';
 import { Post } from './post.entity';
 import { Exclude } from 'class-transformer';
-import { isNotEmpty, isString } from 'class-validator';
 import Role from 'src/enum/role.enum';
 
 @Entity('user')
@@ -14,11 +13,12 @@ export class User extends AbstractEntity {
     @Column({ name: 'last_name' })
     lastName: string;
 
+
     @Column({ name: 'email', length: 255, unique: true })
     email: string
 
     @Column({ name: 'avatar', type: 'longtext', nullable: true })
-    avatar: any
+    avatar: string
 
     @Column({ name: 'role', default: Role.User })
     role: Role

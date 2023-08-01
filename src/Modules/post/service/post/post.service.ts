@@ -17,7 +17,7 @@ export class PostService {
         @InjectRepository(Tag) private readonly _tagRepository: Repository<Tag>
     ) {
 
-    } 
+    }
 
     async createNewPost(payload: CreatePostDto) {
         const user = await this._userRepository.findOneBy({ id: payload.authorId })
@@ -48,8 +48,7 @@ export class PostService {
     }
 
     async getAllPosts(pageOptionsDto: PageOptionsDto): Promise<PageDto<Post>> {
-        const { skip, take, order  } = pageOptionsDto
-
+        const { skip, take, order, } = pageOptionsDto
         const posts = await this._postRepository.find({
             relations: {
                 author: true,
@@ -63,14 +62,16 @@ export class PostService {
                 }
             },
         })
-
         const itemCount = await posts.length
-
         const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+        if (!posts) return new PageDto([], pageMetaDto)
+
         return new PageDto(posts, pageMetaDto)
+
+
     }
 
-    async getPostById(id: number): Promise<Post> {
+    async getPostById(id: string): Promise<Post> {
         if (!id) throw new HttpException('Something went wrong, please try again', HttpStatus.NOT_FOUND)
         const post = await this._postRepository.findOneBy({ id })
         return post

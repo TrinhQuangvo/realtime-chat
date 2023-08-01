@@ -11,7 +11,7 @@ interface iLogin {
 
 
 interface TokenPayload {
-    userId: number;
+    userId: string;
 }
 
 @Injectable()
@@ -33,16 +33,16 @@ export class AuthService {
                 user.password
             );
             if (!isPasswordMatching) {
-                throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
+                throw new HttpException('Tài Khoàn và mật khẩu chưa đúng', HttpStatus.NOT_FOUND);
             }
             user.password = undefined;
             return user;
         } catch (error) {
-            throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
+            throw new HttpException('Tài Khoàn và mật khẩu không tồn tại', HttpStatus.NOT_FOUND);
         }
     }
 
-    public getCookieWithJwtToken(userId: number) {
+    public getCookieWithJwtToken(userId: string) {
         const payload: TokenPayload = { userId };
         const token = this._jwtService.sign(payload);
         return `Authentication=${token}; HttpOnly; Path=/; Max-Age=1d`;

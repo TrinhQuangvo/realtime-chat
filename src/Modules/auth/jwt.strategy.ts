@@ -5,7 +5,7 @@ import { Request } from 'express';
 import { UserService } from '../user/service/user/user.service';
 
 interface TokenPayload {
-    id: number;
+    id: string;
 }
 
 @Injectable()

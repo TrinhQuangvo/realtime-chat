@@ -23,8 +23,7 @@ export class ChatGateway {
     async listenForMessages(@MessageBody() message: string, @ConnectedSocket() socket: Socket) {
         const author = await this.websocketService.getUserFromSocket(socket);
         const data = await this.websocketService.saveMessage({ content: message, author });
-
-        console.log(data, socket)
+ 
 
         this.server.sockets.emit('receive_message', data);
     }

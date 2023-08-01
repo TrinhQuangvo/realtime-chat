@@ -4,15 +4,14 @@ export class CreatePostDto {
     body: string
     slug: string
     thumbnail: string
-    authorId: number
-    tagId: number[]
+    authorId: string
+    tagId: string[]
 }
 
 export class UpdatePostDto {
     title?: string
     body?: string
     slug?: string
-    thumbnail?: string
-    authorId?: number
-    tagId?: number[]
+    thumbnail?: string 
+    tagId?: string[]
 }

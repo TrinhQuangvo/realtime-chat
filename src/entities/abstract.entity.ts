@@ -2,8 +2,8 @@ import { CreateDateColumn, PrimaryGeneratedColumn, } from "typeorm";
 import { Exclude } from 'class-transformer';
 
 export abstract class AbstractEntity {
-    @PrimaryGeneratedColumn({ type: 'int', name: 'id', unsigned: true })
-    public id: number;
+    @PrimaryGeneratedColumn('uuid')
+    public id: string;
 
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", name: 'created_at' })
     @Exclude()

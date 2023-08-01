@@ -7,7 +7,7 @@ import { CreateUserDto, UpdateUserDto } from 'src/dto/user.dto';
 @Injectable()
 export class UserService {
     constructor(
-        @InjectRepository(User) private _userRepository: Repository<User>
+        @InjectRepository(User) private readonly _userRepository: Repository<User>
     ) {
 
     }
@@ -26,11 +26,15 @@ export class UserService {
         return this._userRepository.findOneBy({ email })
     }
 
-    async getUserById(id: number): Promise<User> {
+    async getUserById(id: string): Promise<User> {
         return this._userRepository.findOneBy({ id })
     }
 
-    async updateUser(payload: UpdateUserDto): Promise<User> {
-        return this._userRepository.save(payload)
+    async updateUser(id: string, payload: UpdateUserDto) {
+        return await this._userRepository.update(id, payload)
+    }
+
+    async removeUser(id: string) {
+        return await this._userRepository.softDelete(id)
     }
 }
