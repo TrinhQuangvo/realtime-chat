@@ -1,5 +1,5 @@
 import { Controller, Get, HttpCode, UseGuards, Post, Req, Res, Body } from '@nestjs/common';
-import { Response } from 'express'; 
+import { Response } from 'express';
 import JwtAuthenticationGuard from 'src/guard/jwt-authentication/jwt-authentication.guard';
 import { LocalAuthenticationGuard, RequestWithUser } from 'src/guard/local-authentication/local-authentication.guard';
 import { AuthService } from '../../services/auth/auth.service';
@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth/auth.service';
 interface iLogin {
     email: string
     password: string
+    isRemember: boolean
 }
 
 @Controller('auth')
@@ -16,15 +17,15 @@ export class AuthController {
     @UseGuards(LocalAuthenticationGuard)
     @Post('login')
     @HttpCode(200)
-    async logIn(@Req() request: RequestWithUser, @Res() response: Response) {
+    async logIn(@Req() request: RequestWithUser, @Res() response: Response, @Body() payload: iLogin) {
         const { user } = request;
-        const cookie = this._authService.getCookieWithJwtToken(user.id);
-
+        const { isRemember } = payload
+        const cookie = this._authService.getCookieWithJwtToken(user.id, isRemember); 
         response.setHeader('Set-Cookie', cookie);
         user.password = undefined;
         return response.send(user);
     }
-    
+
     @UseGuards(JwtAuthenticationGuard)
     @Get()
     authenticate(@Req() request: RequestWithUser) {

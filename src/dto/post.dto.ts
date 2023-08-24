@@ -3,7 +3,7 @@ export class CreatePostDto {
     title: string
     body: string
     slug: string
-    thumbnail: string
+    thumbnail?: string
     authorId: string
     tagId: string[]
 }

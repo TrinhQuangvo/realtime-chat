@@ -42,10 +42,26 @@ export class AuthService {
         }
     }
 
-    public getCookieWithJwtToken(userId: string) {
+    public getCookieWithJwtToken(userId: string, isRemember: boolean) {
         const payload: TokenPayload = { userId };
-        const token = this._jwtService.sign(payload);
-        return `Authentication=${token}; HttpOnly; Path=/; Max-Age=1d`;
+        const token = this._jwtService.sign(payload, {
+            secret: 'SECRET',
+            expiresIn: `${isRemember ? '365d' : '1d'}`
+        });
+        return `Authentication=${token}; HttpOnly; Path=/; Max-Age=7d`;
+    }
+
+    public getCookieWithJwtRefreshToken(userId: string) {
+        const payload: TokenPayload = { userId };
+        const token = this._jwtService.sign(payload, {
+            secret: 'SECRET',
+            expiresIn: `1d`
+        });
+        const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=7d`;
+        return {
+            cookie,
+            token
+        }
     }
 
     public async getUserFromAuthenticationToken(token: string) {

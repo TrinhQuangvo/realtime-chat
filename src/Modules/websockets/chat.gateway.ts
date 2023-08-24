@@ -23,15 +23,12 @@ export class ChatGateway {
     async listenForMessages(@MessageBody() message: string, @ConnectedSocket() socket: Socket) {
         const author = await this.websocketService.getUserFromSocket(socket);
         const data = await this.websocketService.saveMessage({ content: message, author });
- 
 
         this.server.sockets.emit('receive_message', data);
     }
 
     @SubscribeMessage('request_all_messages')
-    async requestAllMessages(
-        @ConnectedSocket() socket: Socket,
-    ) {
+    async requestAllMessages(@ConnectedSocket() socket: Socket) {
         await this.websocketService.getUserFromSocket(socket);
         const messages = await this.websocketService.getAllMessages();
 

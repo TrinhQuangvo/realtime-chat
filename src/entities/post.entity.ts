@@ -15,7 +15,7 @@ export class Post extends AbstractEntity {
     @Column()
     slug: string
 
-    @Column()
+    @Column({ nullable: true })
     thumbnail: string
 
     @ManyToOne(() => User, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
