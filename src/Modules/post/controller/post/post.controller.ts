@@ -40,7 +40,7 @@ export class PostController {
         const slug = await this._convertToSlug(payload.title)
         const postThumbnail = thumbnail?.filename ? `post/thumbnails/${thumbnail.filename}` : `post/thumbnails/default-thumbnail.jpg`
         const newPost = await this._postService.createNewPost({ ...payload, slug, thumbnail: postThumbnail })
-        // return newPost
+        return newPost
     }
 
     @HttpCode(200)
