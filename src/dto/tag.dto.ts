@@ -1,6 +1,5 @@
 export class TagDto {
-    id: number
-    thumbnail: string
+    id: string 
     name: string
     slug: string
 }

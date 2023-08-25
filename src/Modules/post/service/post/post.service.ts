@@ -20,11 +20,9 @@ export class PostService {
     }
 
     async createNewPost(payload: CreatePostDto) {
+        const { tagId } = payload
         const user = await this._userRepository.findOneBy({ id: payload.authorId })
-        if (!user) throw new HttpException(
-            'User  found. Cannot create Profile',
-            HttpStatus.BAD_REQUEST,
-        );
+        if (!user) throw new NotFoundException('User  found. Cannot create Profile',)
         const postUser = {
             id: user.id,
             firstName: user.lastName,
@@ -33,7 +31,8 @@ export class PostService {
         }
 
         const tags = await this._tagRepository.find({ where: { id: In(payload.tagId) } })
-        if (!tags) throw new NotFoundException()
+      
+        if (!tags.length) throw new NotFoundException('No tag was found')
         const newTags = tags && tags.map(tag => {
             return {
                 id: tag.id,
@@ -41,7 +40,6 @@ export class PostService {
                 slug: tag.slug
             }
         })
-
         const post = await this._postRepository.create({ ...payload, author: postUser, tags: newTags })
 
         return await this._postRepository.save(post)

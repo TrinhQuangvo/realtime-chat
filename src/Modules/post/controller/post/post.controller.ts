@@ -36,19 +36,13 @@ export class PostController {
     @UseGuards(JwtAuthenticationGuard, RoleGuard)
     @HttpCode(201)
     @Post('create')
-    async createNewPost(@Body() payload: CreatePostDto, @UploadedFile(
-        new ParseFilePipeBuilder()
-            .build({
-                errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-            }),
-    ) thumbnail: Express.Multer.File) {
+    async createNewPost(@Body() payload: CreatePostDto, @UploadedFile() thumbnail: Express.Multer.File) {
         const slug = await this._convertToSlug(payload.title)
-        const newPost = this._postService.createNewPost({ ...payload, slug, thumbnail: `post/thumbnails/${thumbnail.filename}` })
-        return newPost
+        const postThumbnail = thumbnail?.filename ? `post/thumbnails/${thumbnail.filename}` : `post/thumbnails/default-thumbnail.jpg`
+        const newPost = await this._postService.createNewPost({ ...payload, slug, thumbnail: postThumbnail })
+        // return newPost
     }
 
-    @Roles(Role.User)
-    @UseGuards(JwtAuthenticationGuard, RoleGuard)
     @HttpCode(200)
     @Get('')
     async getAllPost(@Param() payload: PageOptionsDto) {
