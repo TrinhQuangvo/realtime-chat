@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Tag } from 'src/entities/tag.entity'; 
+import { Tag } from 'src/entities/tag.entity';
 import { In, Repository } from 'typeorm';
 import { CreateTag, UpdateTag } from '../../tag.interface';
 
@@ -18,8 +18,12 @@ export class TagService {
             .replace(/[^\w-]+/g, "");
     }
 
-    async getTagByIds(ids: number[]) {
+    async getTagByIds(ids: string[]) {
         return await this._tagRepository.find({ where: { id: In(ids) } })
+    }
+
+    async getTagById(id: string) {
+        return await this._tagRepository.find({ where: { id } })
     }
 
     async createNewTag(payload: CreateTag): Promise<Tag> {

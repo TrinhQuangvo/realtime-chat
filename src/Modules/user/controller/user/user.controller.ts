@@ -47,7 +47,7 @@ export class UserController {
 
     @HttpCode(200)
     @Put('update')
-    async updateUser(id, @Body() payload: UpdateUserDto) {
+    async updateUser(id: string, @Body() payload: UpdateUserDto) {
         return this._userService.updateUser(id, payload)
     }
 

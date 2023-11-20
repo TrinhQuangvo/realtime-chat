@@ -55,7 +55,7 @@ export class AuthService {
         const payload: TokenPayload = { userId };
         const token = this._jwtService.sign(payload, {
             secret: 'SECRET',
-            expiresIn: `1d`
+            expiresIn: '1d'
         });
         const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=7d`;
         return {

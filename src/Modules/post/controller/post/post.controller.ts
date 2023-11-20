@@ -38,7 +38,7 @@ export class PostController {
     @Post('create')
     async createNewPost(@Body() payload: CreatePostDto, @UploadedFile() thumbnail: Express.Multer.File) {
         const slug = await this._convertToSlug(payload.title)
-        const postThumbnail = thumbnail?.filename ? `post/thumbnails/${thumbnail.filename}` : `post/thumbnails/default-thumbnail.jpg`
+        const postThumbnail = thumbnail?.filename + 'post/thumbnails/' ? `${thumbnail.filename}` : `default-thumbnail.jpg`
         const newPost = await this._postService.createNewPost({ ...payload, slug, thumbnail: postThumbnail })
         return newPost
     }
